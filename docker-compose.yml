@@ -12,6 +12,8 @@ services:
       - petto
 
   app:
+    container_name: petto_app
+    image: petto_app_image:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -32,6 +34,8 @@ services:
       - petto
 
   webpacker:
+    container_name: petto_webpacker
+    image: petto_app_image:latest
     build: .
     command: ./bin/webpack-dev-server
     volumes:
