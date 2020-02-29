@@ -1,6 +1,6 @@
 # Petto ペット
 
-A little **_pet_** (_get it?_) project powered by:
+A little **_pet_** project (_get it?_) :stuck_out_tongue: powered by:
 * Ruby
 * React
 * Docker
