@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    container_name: petto_db
+    image: postgres:12.2
+    environment:
+      POSTGRES_USER: ${PETTO_DB_USERNAME}
+      POSTGRES_PASSWORD: ${PETTO_DB_PASSWORD}
+    ports:
+      - 5432:5432
+    networks:
+      - petto
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - 6789:6789
+    volumes:
+      - .:/petto
+    env_file: .env
+    environment:
+      PETTO_DB_HOST: ${PETTO_DB_HOST}
+      PETTO_DB_NAME: ${PETTO_DB_NAME}
+      PETTO_DB_USERNAME: ${PETTO_DB_USERNAME}
+      PETTO_DB_PASSWORD: ${PETTO_DB_PASSWORD}
+      RAILS_ENV: ${PETTO_RAILS_ENV}
+    networks:
+      - petto
+
+  webpacker:
+    build: .
+    command: ./bin/webpack-dev-server
+    volumes:
+      - .:/app
+    ports:
+      - 3035:3035
+    environment:
+      NODE_ENV: ${PETTO_RAILS_ENV}
+      RAILS_ENV: ${PETTO_RAILS_ENV}
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+
+networks:
+  petto:
+    driver: bridge

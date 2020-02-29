@@ -1,0 +1,5 @@
+{
+    "prettier.arrowParens": "always",
+    "prettier.packageManager": "yarn",
+    "editor.formatOnSave": true
+}

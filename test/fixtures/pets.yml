@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  type: 
+  birthday: 2020-02-29
+  breed: MyString
+  description: MyText
+  microchip_number: MyString
+  adoption_date: 2020-02-29
+  color: MyText
+  owner_id: 1
+
+two:
+  name: MyString
+  type: 
+  birthday: 2020-02-29
+  breed: MyString
+  description: MyText
+  microchip_number: MyString
+  adoption_date: 2020-02-29
+  color: MyText
+  owner_id: 1

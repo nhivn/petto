@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://guides.rubyonrails.org/configuring.html#database-pooling
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV['PETTO_DB_HOST'] %>
+  database: <%= ENV['PETTO_DB_NAME'] %>
+  username: <%= ENV['PETTO_DB_USERNAME'] %>
+  password: <%= ENV['PETTO_DB_PASSWORD'] %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
