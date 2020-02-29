@@ -1,7 +1,7 @@
 version: '3'
 services:
   db:
-    container_name: petto_db
+    container_name: petto-db
     image: postgres:12.2
     environment:
       POSTGRES_USER: ${PETTO_DB_USERNAME}
@@ -12,8 +12,8 @@ services:
       - petto
 
   app:
-    container_name: petto_app
-    image: petto_app_image:latest
+    container_name: petto-app
+    image: petto-app-image:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -34,8 +34,8 @@ services:
       - petto
 
   webpacker:
-    container_name: petto_webpacker
-    image: petto_app_image:latest
+    container_name: petto-webpacker
+    image: petto-app-image:latest
     build: .
     command: ./bin/webpack-dev-server
     volumes:
