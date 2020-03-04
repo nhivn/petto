@@ -45,3 +45,8 @@ spec:
                 secretKeyRef:
                   name: petto-dev-secrets
                   key: PETTO_RAILS_ENV
+            - name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: petto-dev-secrets
+                  key: RAILS_MASTER_KEY
