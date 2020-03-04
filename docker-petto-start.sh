@@ -7,6 +7,7 @@ if [ -f tmp/pids/server.pid ]; then
 fi
 
 if [[ $RAILS_ENV == production ]]
+then
   rails assets:precompile
 fi
 
