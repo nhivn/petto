@@ -35,6 +35,7 @@ WORKDIR /petto
 
 # Copy and install all gems if needed
 COPY Gemfile Gemfile.lock ./
+ENV BUNDLE_FORCE_RUBY_PLATFORM true
 RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install
 
