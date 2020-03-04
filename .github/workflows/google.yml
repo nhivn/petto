@@ -25,6 +25,7 @@ env:
   IMAGE: petto-app-image
   REGISTRY_HOSTNAME: gcr.io
   DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME }}
+  PETTO_DIR: /home/runner/work/petto/petto
 
 jobs:
   setup-build-publish-deploy:
@@ -47,8 +48,6 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
-        pwd
-        ls -al
       
     # Build the Docker image
     - name: Build
@@ -72,8 +71,8 @@ jobs:
     - name: Deploy
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-        cd ./kube/overlays/production
-        /petto/kustomize edit set image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA}
-        /petto/kustomize build . | kubectl apply -f -
+        cd ${PETTO_DIR}/kube/overlays/production
+        ${PETTO_DIR}/kustomize edit set image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA}
+        ${PETTO_DIR}/kustomize build . | kubectl apply -f -
         kubectl rollout status deployment/$DEPLOYMENT_NAME
         kubectl get services -o wide
