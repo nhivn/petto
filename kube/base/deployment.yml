@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petto-app-deployment
+  labels:
+    app: petto-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petto
+  template:
+    metadata:
+      labels:
+        app: petto
+    spec:
+      containers:
+        - name: petto-app
+          image: petto-app-image:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: PETTO_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: petto-dev-secrets
+                  key: PETTO_DB_HOST
+            - name: PETTO_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: petto-dev-secrets
+                  key: PETTO_DB_NAME
+            - name: PETTO_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: petto-dev-secrets
+                  key: PETTO_DB_USER
+            - name: PETTO_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: petto-dev-secrets
+                  key: PETTO_DB_PASSWORD
+            - name: RAILS_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: petto-dev-secrets
+                  key: PETTO_RAILS_ENV
