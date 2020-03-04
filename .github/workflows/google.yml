@@ -47,6 +47,8 @@ jobs:
         # Set up docker to authenticate
         # via gcloud command-line tool.
         gcloud auth configure-docker
+        pwd
+        ls -al
       
     # Build the Docker image
     - name: Build
@@ -70,7 +72,6 @@ jobs:
     - name: Deploy
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-        ls -al ~/petto
         cd ./kube/overlays/production
         /petto/kustomize edit set image $REGISTRY_HOSTNAME/$GKE_PROJECT/$IMAGE:${GITHUB_SHA}
         /petto/kustomize build . | kubectl apply -f -
