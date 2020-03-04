@@ -15,6 +15,9 @@ RUN apk add --update --no-cache \
     libstdc++ \
     libffi-dev \
     libc-dev \
+    libc6-compat \
+    libsass \
+    libsass-dev \
     linux-headers \
     libxml2-dev \
     libxslt-dev \
@@ -28,6 +31,8 @@ RUN apk add --update --no-cache \
     python \
     tzdata \
     yarn
+
+ENV LD_LIBRARY_PATH=/lib64
 
 RUN gem install bundler -v 2.1.2
 
