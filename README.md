@@ -9,5 +9,5 @@ A little **_pet_** project (_get it?_) :stuck_out_tongue: powered by:
 
 Run the below command
 ```
-./build/dev.sh build
+./script/dev.sh build
 ```

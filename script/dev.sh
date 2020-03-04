@@ -8,7 +8,7 @@ CLEAR='\033[0m'
 
 build() {
   echo -e "${YELLOW}Building petto_app_image...${CLEAR}"
-  docker build -t petto_app_image -f Dockerfile .
+  docker build -t petto-app-image -f Dockerfile .
   echo -e "${YELLOW}Starting petto containers quietly...${CLEAR}"
   docker-compose up -d
 }
