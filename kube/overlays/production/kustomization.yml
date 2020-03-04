@@ -4,7 +4,3 @@ commonLabels:
   app: petto
 resources:
 - ../../base
-secretGenerator:
-- envs:
-  - .env
-  name: petto-dev-secrets
