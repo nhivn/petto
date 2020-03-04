@@ -34,7 +34,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: petto-dev-secrets
-                  key: PETTO_DB_USER
+                  key: PETTO_DB_USERNAME
             - name: PETTO_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
