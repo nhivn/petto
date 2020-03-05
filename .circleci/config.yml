@@ -1,0 +1,13 @@
+version: 2.1
+orbs:
+  gke: circleci/gcp-gke@1.0.3
+
+workflows:
+  main:
+    jobs:
+      - gke/publish-and-rollout-image:
+          cluster: $GKE_CLUSTER
+          container: petto-app
+          deployment: petto-app-deployment
+          image: petto-app-image
+          tag: $GITHUB_SHA
