@@ -11,8 +11,9 @@ workflows:
           tag: $CIRCLE_SHA1
 
       - gke/rollout-image:
-          requires: gcr/build-and-push-image
           type: approval
+          requires:
+            - gcr/build-and-push-image
           cluster: $GKE_CLUSTER
           container: petto-app
           deployment: petto-app-deployment
