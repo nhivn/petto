@@ -16,7 +16,6 @@ workflows:
             - gcr/build-and-push-image
           steps:
             - gke/rollout-image:
-                name: Update a deployment's Docker image
                 cluster: $GKE_CLUSTER
                 container: petto-app
                 deployment: petto-app-deployment
