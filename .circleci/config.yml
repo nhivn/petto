@@ -5,7 +5,6 @@ orbs:
 
 jobs:
   deploy-image-to-gke:
-    type: approval
     executor: gke/default
     steps:
       - gke/rollout-image:
@@ -23,5 +22,6 @@ workflows:
           tag: $CIRCLE_SHA1
 
       - deploy-image-to-gke:
+          type: approval
           requires:
             - gcr/build-and-push-image
