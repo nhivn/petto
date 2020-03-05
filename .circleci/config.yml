@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   deploy-image-to-gke:
+    type: approval
     executor: gke/default
     steps:
       - gke/rollout-image:
