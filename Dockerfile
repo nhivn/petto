@@ -15,9 +15,6 @@ RUN apk add --update --no-cache \
     libstdc++ \
     libffi-dev \
     libc-dev \
-    libc6-compat \
-    libsass \
-    libsass-dev \
     linux-headers \
     libxml2-dev \
     libxslt-dev \
@@ -32,15 +29,13 @@ RUN apk add --update --no-cache \
     tzdata \
     yarn
 
-ENV LD_LIBRARY_PATH=/lib64
-
 RUN gem install bundler -v 2.1.2
 
 WORKDIR /petto
 
 # Copy and install all gems if needed
 COPY Gemfile Gemfile.lock ./
-ENV BUNDLE_FORCE_RUBY_PLATFORM true
+RUN bundle config --local build.sassc --disable-march-tune-native
 RUN bundle config build.nokogiri --use-system-libraries
 RUN bundle check || bundle install
 
