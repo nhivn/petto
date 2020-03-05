@@ -10,4 +10,4 @@ workflows:
           container: petto-app
           deployment: petto-app-deployment
           image: petto-app-image
-          tag: $GITHUB_SHA
+          tag: $CIRCLECI_SHA1
