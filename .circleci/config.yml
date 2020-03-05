@@ -4,13 +4,14 @@ orbs:
   gcr: circleci/gcp-gcr@0.6.1
 
 workflows:
-  main:
+  publish-and-deploy:
     jobs:
       - gcr/build-and-push-image:
           image: petto-app-image
           tag: $CIRCLE_SHA1
 
       - deploy-image-to-gke:
+          executor: gke/default
           type: approval
           requires:
             - gcr/build-and-push-image
