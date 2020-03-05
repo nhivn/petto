@@ -10,7 +10,7 @@ workflows:
         image: petto-app-image
         tag: $CIRCLE_SHA1
 
-      deploy-image-to-gke:
+      - deploy-image-to-gke:
         type: approval
         requires:
           - gcr/build-and-push-image
