@@ -3,21 +3,24 @@ orbs:
   gke: circleci/gcp-gke@1.0.3
   gcr: circleci/gcp-gcr@0.6.1
 
+commands:
+  rollout-image: gke/rollout-image
+
 workflows:
   main:
     jobs:
-      - gcr/build-and-push-image:
-          image: petto-app-image
-          tag: $CIRCLE_SHA1
+      gcr/build-and-push-image:
+        image: petto-app-image
+        tag: $CIRCLE_SHA1
 
-      - rollout-image:
-          type: approval
-          requires:
-            - gcr/build-and-push-image
-          steps:
-            - gke/rollout-image:
-                cluster: $GKE_CLUSTER
-                container: petto-app
-                deployment: petto-app-deployment
-                image: petto-app-image
-                tag: $CIRCLE_SHA1
+      rollout-image:
+        type: approval
+        requires:
+          - gcr/build-and-push-image
+        steps:
+          - rollout-image:
+              cluster: $GKE_CLUSTER
+              container: petto-app
+              deployment: petto-app-deployment
+              image: petto-app-image
+              tag: $CIRCLE_SHA1
