@@ -12,7 +12,6 @@ workflows:
 
       - deploy-image-to-gke:
           executor: gke/default
-          type: approval
           requires:
             - gcr/build-and-push-image
           steps:
