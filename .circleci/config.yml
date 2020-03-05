@@ -5,6 +5,7 @@ orbs:
 
 jobs:
   deploy-image-to-gke:
+    executor: gke/default
     steps:
       - gke/rollout-image:
           cluster: $GKE_CLUSTER
@@ -21,6 +22,5 @@ workflows:
           tag: $CIRCLE_SHA1
 
       - deploy-image-to-gke:
-          executor: gke/default
           requires:
             - gcr/build-and-push-image
