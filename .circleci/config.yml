@@ -9,16 +9,16 @@ commands:
 workflows:
   main:
     jobs:
-      gcr/build-and-push-image:
+      - gcr/build-and-push-image:
         image: petto-app-image
         tag: $CIRCLE_SHA1
 
-      rollout-image:
+      deploy-image-to-gke:
         type: approval
         requires:
           - gcr/build-and-push-image
         steps:
-          - rollout-image:
+          - gke/rollout-image:
               cluster: $GKE_CLUSTER
               container: petto-app
               deployment: petto-app-deployment
