@@ -1,13 +1,20 @@
 version: 2.1
 orbs:
   gke: circleci/gcp-gke@1.0.3
+  gcr: circleci/gcp-gcr@0.6.1
 
 workflows:
   main:
     jobs:
-      - gke/publish-and-rollout-image:
+      - gcr/build-and-push-image:
+          image: petto-app-image
+          tag: $CIRCLE_SHA1
+
+      - gke/rollout-image:
+          requires: gcr/build-and-push-image
+          type: approval
           cluster: $GKE_CLUSTER
           container: petto-app
           deployment: petto-app-deployment
           image: petto-app-image
-          tag: $CIRCLECI_SHA1
+          tag: $CIRCLE_SHA1
