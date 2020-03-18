@@ -1,0 +1,87 @@
+version: 2.1
+orbs:
+  gke: circleci/gcp-gke@1.0.3
+  gcr: circleci/gcp-gcr@0.6.1
+
+jobs:
+  build-image:
+    executor: gcr/default
+    steps:
+      - checkout
+      - gcr/build-image:
+          image: petto-app-image
+          tag: $CIRCLE_SHA1
+
+  deploy-image-to-gke:
+    description: Deploy image in GCR
+    executor: gke/default
+    parameters:
+      cluster:
+        description: The Kubernetes cluster name.
+        type: string
+      container:
+        description: The Kubernetes container name.
+        type: string
+      deployment:
+        description: The Kubernetes deployment name.
+        type: string
+      image:
+        description: A fully-qualified name for your docker image
+        type: string
+      namespace:
+        default: ''
+        description: The Kubernetes namespace name.
+        type: string
+      tag:
+        default: latest
+        description: Docker image tag
+        type: string
+      registry-url:
+        default: gcr.io
+        description: 'The GCR registry URL from ['''', us, eu, asia].gcr.io'
+        type: string
+    steps:
+      - gke/update-kubeconfig-with-credentials:
+          perform-login: true
+          install-kubectl: true
+          cluster: <<parameters.cluster>>
+      - run:
+          name: Roll out image
+          command: >
+            if [ -n "<<parameters.namespace>>" ]; then
+              set -- "$@" --namespace="<<parameters.namespace>>"
+            fi
+
+            kubectl set image deployment <<parameters.deployment>>
+            <<parameters.container>>=<<parameters.registry-url>>/$GOOGLE_PROJECT_ID/<<parameters.image>>:<<parameters.tag>> "$@"
+
+workflows:
+  build-and-test:
+    jobs:
+      - build-image:
+          filters:
+            branches:
+              ignore: master
+
+  publish-and-deploy:
+    jobs:
+      - gcr/build-and-push-image:
+          image: petto-app-image
+          tag: $CIRCLE_SHA1
+          filters:
+            branches:
+              only:
+                - master
+
+      - deploy-image-to-gke:
+          cluster: $GKE_CLUSTER
+          container: petto-app
+          deployment: petto-app-deployment
+          image: petto-app-image
+          tag: $CIRCLE_SHA1
+          requires:
+            - gcr/build-and-push-image
+          filters:
+            branches:
+              only:
+                - master
