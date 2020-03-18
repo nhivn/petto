@@ -16,23 +16,29 @@ jobs:
     description: Deploy image in GCR
     executor: gke/default
     parameters:
-      image:
-        description: A name for your docker image
+      cluster:
+        description: The Kubernetes cluster name.
+        type: string
+      container:
+        description: The Kubernetes container name.
         type: string
       deployment:
         description: The Kubernetes deployment name.
+        type: string
+      image:
+        description: A fully-qualified name for your docker image
         type: string
       namespace:
         default: ''
         description: The Kubernetes namespace name.
         type: string
+      tag:
+        default: latest
+        description: Docker image tag
+        type: string
       registry-url:
         default: gcr.io
         description: 'The GCR registry URL from ['''', us, eu, asia].gcr.io'
-        type: string
-      tag:
-        default: latest
-        description: A docker image tag
         type: string
     steps:
       - update-kubeconfig-with-credentials:
