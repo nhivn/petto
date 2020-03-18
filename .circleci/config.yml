@@ -70,7 +70,6 @@ workflows:
             branches:
               only:
                 - master
-                - circleci-project-setup
 
       - deploy-image-to-gke:
           cluster: $GKE_CLUSTER
@@ -84,4 +83,3 @@ workflows:
             branches:
               only:
                 - master
-                - circleci-project-setup
