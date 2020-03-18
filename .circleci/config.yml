@@ -7,6 +7,10 @@ jobs:
   deploy-image-to-gke:
     executor: gke/default
     steps:
+      - gcr/gcr-auth:
+          gcloud-service-key: $GCLOUD_SERVICE_KEY
+          google-compute-zone: $GOOGLE_COMPUTE_ZONE
+          google-project-id: $GOOGLE_PROJECT_ID
       - gke/rollout-image:
           cluster: $GKE_CLUSTER
           container: petto-app
