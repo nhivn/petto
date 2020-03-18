@@ -41,7 +41,7 @@ jobs:
         description: 'The GCR registry URL from ['''', us, eu, asia].gcr.io'
         type: string
     steps:
-      - update-kubeconfig-with-credentials:
+      - gke/update-kubeconfig-with-credentials:
           perform-login: true
           install-kubectl: true
           cluster: <<parameters.cluster>>
