@@ -6,6 +6,13 @@ orbs:
   k8s: circleci/kubernetes@0.11.0
 
 jobs:
+  build-image:
+    executor: gcr/default
+    steps:
+      - gcr/build-image:
+          image: petto-app-image
+          tag: $CIRCLE_SHA1
+
   deploy-image-to-gke:
     executor: gke/default
     steps:
@@ -21,9 +28,19 @@ jobs:
 workflows:
   publish-and-deploy:
     jobs:
+      - build-image:
+          filters:
+            branches:
+              ignore: master
+
       - gcr/build-and-push-image:
           image: petto-app-image
           tag: $CIRCLE_SHA1
+          filters:
+            branches:
+              only:
+                - master
+                - circleci-project-setup
 
       - deploy-image-to-gke:
           requires:
