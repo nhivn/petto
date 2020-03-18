@@ -27,4 +27,6 @@ workflows:
             - gcr/build-and-push-image
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - circleci-project-setup
