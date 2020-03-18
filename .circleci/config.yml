@@ -9,7 +9,7 @@ jobs:
   deploy-image-to-gke:
     executor: gke/default
     steps:
-      - k8s/install
+      - k8s/install-kubectl
       - gcloud/initialize
       - gke/rollout-image:
           cluster: $GKE_CLUSTER
