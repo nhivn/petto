@@ -13,16 +13,41 @@ jobs:
           tag: $CIRCLE_SHA1
 
   deploy-image-to-gke:
+    description: Deploy image in GCR
     executor: gke/default
+    parameters:
+      image:
+        description: A name for your docker image
+        type: string
+      deployment:
+        description: The Kubernetes deployment name.
+        type: string
+      namespace:
+        default: ''
+        description: The Kubernetes namespace name.
+        type: string
+      registry-url:
+        default: gcr.io
+        description: 'The GCR registry URL from ['''', us, eu, asia].gcr.io'
+        type: string
+      tag:
+        default: latest
+        description: A docker image tag
+        type: string
     steps:
-      - gke/rollout-image:
+      - update-kubeconfig-with-credentials:
           perform-login: true
           install-kubectl: true
-          cluster: $GKE_CLUSTER
-          container: petto-app
-          deployment: petto-app-deployment
-          image: petto-app-image
-          tag: $CIRCLE_SHA1
+          cluster: <<parameters.cluster>>
+      - run:
+          name: Roll out image
+          command: >
+            if [ -n "<<parameters.namespace>>" ]; then
+              set -- "$@" --namespace="<<parameters.namespace>>"
+            fi
+
+            kubectl set image deployment <<parameters.deployment>>
+            <<parameters.container>>=<<parameters.registry-url>>/$GOOGLE_PROJECT_ID/<<parameters.image>>:<<parameters.tag>> "$@"
 
 workflows:
   publish-and-deploy:
@@ -42,6 +67,11 @@ workflows:
                 - circleci-project-setup
 
       - deploy-image-to-gke:
+          cluster: $GKE_CLUSTER
+          container: petto-app
+          deployment: petto-app-deployment
+          image: petto-app-image
+          tag: $CIRCLE_SHA1
           requires:
             - gcr/build-and-push-image
           filters:
