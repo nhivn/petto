@@ -56,13 +56,15 @@ jobs:
             <<parameters.container>>=<<parameters.registry-url>>/$GOOGLE_PROJECT_ID/<<parameters.image>>:<<parameters.tag>> "$@"
 
 workflows:
-  publish-and-deploy:
+  build-and-test:
     jobs:
       - build-image:
           filters:
             branches:
               ignore: master
 
+  publish-and-deploy:
+    jobs:
       - gcr/build-and-push-image:
           image: petto-app-image
           tag: $CIRCLE_SHA1
