@@ -3,12 +3,12 @@ orbs:
   gke: circleci/gcp-gke@1.0.3
   gcr: circleci/gcp-gcr@0.6.1
   gcloud: circleci/gcp-cli@1.8.4
-  k8s: circleci/kubernetes@0.11.0
 
 jobs:
   build-image:
     executor: gcr/default
     steps:
+      - checkout
       - gcr/build-image:
           image: petto-app-image
           tag: $CIRCLE_SHA1
