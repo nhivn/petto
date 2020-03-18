@@ -2,7 +2,6 @@ version: 2.1
 orbs:
   gke: circleci/gcp-gke@1.0.3
   gcr: circleci/gcp-gcr@0.6.1
-  gcloud: circleci/gcp-cli@1.8.4
 
 jobs:
   build-image:
@@ -16,9 +15,9 @@ jobs:
   deploy-image-to-gke:
     executor: gke/default
     steps:
-      - gke/install
-      - gcloud/initialize
       - gke/rollout-image:
+          perform-login: true
+          install-kubectl: true
           cluster: $GKE_CLUSTER
           container: petto-app
           deployment: petto-app-deployment
